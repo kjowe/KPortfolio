@@ -1,2 +1,2 @@
 # KPortfolio
-My portfolio: please do not copyright.
+My portfolio: Please do not copyright.
