@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kai Owen's Portfolio - kaiowenportfolio.com</title>
+
+  <!-- Load Merriweather font -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Your existing CSS styles */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(135deg, #001f4d, #2c3e50, #4ca1af);
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: #f0f0f0;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transform: scale(2);
+      transform-origin: top center;
+      width: 50%;
+      margin: 0 auto;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      height: 85px;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(180deg, #000000 0%, #2c3e50 100%);
+      padding: 0 2rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+      user-select: none;
+      position: relative;
+      z-index: 20;
+      font-family: 'Merriweather', serif;
+      text-shadow:
+        2px 2px 0 #000000,
+        4px 4px 5px rgba(0,0,0,0.7);
+    }
+
+    .profile-photo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      border: 3px solid #fffacd;
+      flex-shrink: 0;
+      background-color: #2c3e50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .profile-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .profile-photo::after {
+      content: "📷";
+      position: absolute;
+      bottom: 2px;
+      right: 4px;
+      font-size: 1rem;
+      color: #ffd700;
+      pointer-events: none;
+      user-select: none;
+    }
+    #profilePhotoUpload {
+      display: none;
+    }
+
+    .header-text {
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      position: relative;
+      z-index: 10;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    main.fade-out {
+      opacity: 0;
+    }
+    main.fade-in {
+      opacity: 1;
+    }
+
+    main h2 {
+      position: relative;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    main h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    #home-content {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      justify-content: flex-start;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    #home-photo {
+      flex: 1 1 25%;
+      max-width: 25%;
+      border-radius: 15px;
+      overflow: hidden;
+      background: linear-gradient(to bottom, rgba(44, 62, 80, 0.8), transparent);
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+
+    /* Scale home photo image to 150% */
+    #home-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 15px;
+      transform: scale(1.5);
+      transform-origin: center center;
+      transition: transform 0.3s ease;
+    }
+
+    #home-text {
+      flex: 1 1 75%;
+      max-width: 75%;
+      margin-left: 0;
+      font-size: 0.85em;
+      line-height: 1.4;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    nav {
+      position: relative;
+      z-index: 15;
+      background-color: rgba(44, 62, 80, 0.95);
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav ul li {
+      padding: 1rem 0;
+    }
+
+    nav ul li a {
+      position: relative;
+      color: #ffffe0;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding-bottom: 6px;
+      transition: color 0.3s ease;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 2px;
+      opacity: 0.6;
+      pointer-events: none;
+      transition: opacity 0.3s ease, box-shadow 0.3s ease;
+    }
+    nav ul li a:hover::after,
+    nav ul li a.active::after {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.75);
+      box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.6);
+    }
+
+    section {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #contact {
+      display: block;
+    }
+    #contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 400px;
+    }
+    #contact-form input[type="text"],
+    #contact-form input[type="email"],
+    #contact-form textarea {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.6rem;
+      border-radius: 4px;
+      border: none;
+      font-size: 1rem;
+      resize: vertical;
+    }
+    #contact-form button {
+      padding: 0.8rem;
+      font-weight: bold;
+      background-color: #ffd700;
+      border: none;
+      border-radius: 4px;
+      color: #2c3e50;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+    #contact-form button:hover {
+      background-color: #e6c200;
+    }
+    #contact a {
+      color: #ffffe0;
+      text-decoration: underline;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    /* Media container styles */
+    .media-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .media-item {
+      position: relative;
+      max-width: 200px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      background-color: #1a2a3a;
+    }
+    .media-item img,
+    .media-item video,
+    .media-item iframe {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+    .media-item button {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: rgba(255, 215, 0, 0.85);
+      border: none;
+      border-radius: 4px;
+      padding: 0.3rem 0.6rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: #2c3e50;
+      transition: background-color 0.3s ease;
+    }
+    .media-item button:hover {
+      background-color: #e6c200;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <label class="profile-photo" for="profilePhotoUpload" title="Click to upload profile photo" tabindex="0" aria-label="Upload profile photo">
+      <img id="profileImage" src="https://via.placeholder.com/150" alt="Profile Photo" />
+    </label>
+    <input type="file" id="profilePhotoUpload" accept="image/*" />
+    <div class="header-text">Kai Owen's Portfolio</div>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#home" class="active" onclick="navigate(event, 'home')">Home</a></li>
+      <li><a href="#photos" onclick="navigate(event, 'photos')">Photos</a></li>
+      <li><a href="#reels" onclick="navigate(event, 'reels')">Reels</a></li>
+      <li><a href="#more" onclick="navigate(event, 'more')">More</a></li>
+      <li><a href="#contact" onclick="navigate(event, 'contact')">Contact Information</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+    <section id="home" class="active">
+      <h2>Welcome to My Portfolio</h2>
+      <div id="home-content">
+        <div id="home-photo">
+          <img id="homeImage" alt="Home related photo" />
+        </div>
+        <div id="home-text">
+          <p>Hello! My name is Kai and I have been in the media profession for 3 years, collaborating closely with faculty and staff to develop impactful media strategies. My work includes thorough social media evaluation and community building to enhance engagement and reach.</p>
+          <p>I am actively seeking a position specializing in media analysis, where I can apply my skills to interpret data and optimize media performance effectively.</p>
+        </div>
+      </div>
+      <input type="file" id="homePhotoUpload" accept="image/*" style="margin-top:1rem;" />
+    </section>
+
+    <section id="photos">
+      <h2>Photos</h2>
+      <div class="media-container" id="photosContainer"></div>
+      <input type="file" id="photoUpload" accept="image/*" multiple style="display:none" />
+      <button class="add-btn" onclick="document.getElementById('photoUpload').click()">Upload Photos</button>
+    </section>
+
+    <section id="reels">
+      <h2>Reels</h2>
+      <div class="media-container" id="reelsContainer"></div>
+      <input type="file" id="reelUpload" accept="video/*" multiple style="display:none" />
+      <button class="add-btn" onclick="document.getElementById('reelUpload').click()">Upload Reels</button>
+    </section>
+
+    <section id="more">
+      <h2>More</h2>
+      <div class="media-container" id="moreContainer"></div>
+      <input type="file" id="moreUpload" accept="image/*,video/*,application/pdf" multiple style="display:none" />
+      <button class="add-btn" onclick="document.getElementById('moreUpload').click()">Upload Media</button>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Information</h2>
+      <p>Email: <a href="mailto:owenkj00@gmail.com">owenkj00@gmail.com</a></p>
+      <form id="contact-form">
+        <input type="text" name="user_name" placeholder="Your Name" required />
+        <input type="email" name="user_email" placeholder="Your Email" required />
+        <input type="hidden" name="reply_to" />
+        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+      <p id="form-status" style="margin-top:1rem;"></p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    // Initialize EmailJS with your Public Key
+    emailjs.init("xLqD1qfwogLqs2U2p");
+
+    const mainContent = document.getElementById('main-content');
+
+    function navigate(event, sectionId) {
+      event.preventDefault();
+
+      mainContent.classList.add('fade-out');
+
+      setTimeout(() => {
+        document.querySelectorAll('nav ul li a').forEach(link => link.classList.remove('active'));
+        event.target.classList.add('active');
+
+        document.querySelectorAll('main section').forEach(section => section.classList.remove('active'));
+        const activeSection = document.getElementById(sectionId);
+        if (activeSection) activeSection.classList.add('active');
+
+        location.hash = sectionId;
+
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        mainContent.classList.remove('fade-out');
+        mainContent.classList.add('fade-in');
+
+        setTimeout(() => {
+          mainContent.classList.remove('fade-in');
+        }, 300);
+      }, 300);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      mainContent.classList.add('fade-in');
+
+      const hash = location.hash.substring(1);
+      if (hash && document.getElementById(hash)) {
+        document.querySelectorAll('nav ul li a').forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + hash);
+        });
+        document.querySelectorAll('main section').forEach(section => {
+          section.classList.toggle('active', section.id === hash);
+        });
+      }
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+
+    // Profile photo upload
+    const profileInput = document.getElementById('profilePhotoUpload');
+    const profileImage = document.getElementById('profileImage');
+    profileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = event => {
+        profileImage.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Home photo upload
+    const homePhotoInput = document.getElementById('homePhotoUpload');
+    const homeImage = document.getElementById('homeImage');
+    homePhotoInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = event => {
+        homeImage.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Contact form submission with EmailJS
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const form = this;
+      const status = document.getElementById('form-status');
+      status.style.color = '';
+      status.textContent = 'Sending...';
+
+      emailjs.sendForm('service_xqdhhpt', 'template_byrdayu', form)
+        .then(() => {
+          status.style.color = 'lightgreen';
+          status.textContent = 'Message sent successfully!';
+          form.reset();
+        }, (error) => {
+          status.style.color = 'salmon';
+          status.textContent = 'Failed to send message. Please try again later.';
+          console.error('EmailJS error:', error);
+        });
+    });
+
+    // Photo upload with resizing to 65%
+    document.getElementById('photoUpload').addEventListener('change', function() {
+      const container = document.getElementById('photosContainer');
+      Array.from(this.files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = new Image();
+          img.onload = () => {
+            // Create a canvas to resize the image
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas size to 65% of original image size
+            canvas.width = img.width * 0.65;
+            canvas.height = img.height * 0.65;
+
+            // Draw the resized image on canvas
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Get the resized image data URL (adjust quality if JPEG/WEBP)
+            const resizedDataUrl = canvas.toDataURL(file.type, 0.8); // 0.8 quality
+
+            const div = document.createElement('div');
+            div.className = 'media-item';
+            div.innerHTML = `<img src="${resizedDataUrl}" alt="User Photo" />
+              <button onclick="editMedia(this)">Edit</button>`;
+            container.appendChild(div);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+      this.value = '';
+    });
+
+    // Reel upload
+    document.getElementById('reelUpload').addEventListener('change', function() {
+      const container = document.getElementById('reelsContainer');
+      Array.from(this.files).forEach(file => {
+        if (!file.type.startsWith('video/')) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          const div = document.createElement('div');
+          div.className = 'media-item';
+          div.innerHTML = `<video controls>
+            <source src="${e.target.result}" type="${file.type}" />
+            Your browser does not support the video tag.
+          </video>
+          <button onclick="editMedia(this)">Edit</button>`;
+          container.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+      });
+      this.value = '';
+    });
+
+    // More upload
+    document.getElementById('moreUpload').addEventListener('change', function() {
+      const container = document.getElementById('moreContainer');
+      Array.from(this.files).forEach(file => {
+        const div = document.createElement('div');
+        div.className = 'media-item';
+
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            div.innerHTML = `<img src="${e.target.result}" alt="User Media" />
+              <button onclick="editMedia(this)">Edit</button>`;
+            container.appendChild(div);
+          };
+          reader.readAsDataURL(file);
+        } else if (file.type.startsWith('video/')) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            div.innerHTML = `<video controls>
+              <source src="${e.target.result}" type="${file.type}" />
+              Your browser does not support the video tag.
+            </video>
+            <button onclick="editMedia(this)">Edit</button>`;
+            container.appendChild(div);
+          };
+          reader.readAsDataURL(file);
+        } else if (file.type === 'application/pdf') {
+          const blobUrl = URL.createObjectURL(file);
+          div.innerHTML = `<iframe src="${blobUrl}" type="application/pdf" style="width:100%; height:250px; border:none;"></iframe>
+            <button onclick="editMedia(this)">Edit</button>`;
+          container.appendChild(div);
+        }
+      });
+      this.value = '';
+    });
+
+    function editMedia(button) {
+      const mediaItem = button.parentElement;
+      const img = mediaItem.querySelector('img');
+      const videoSource = mediaItem.querySelector('video source');
+      const iframe = mediaItem.querySelector('iframe');
+
+      if (img) {
+        const newSrc = prompt("Enter new image URL:", img.src);
+        if (newSrc) img.src = newSrc;
+      } else if (videoSource) {
+        const newSrc = prompt("Enter new video URL (mp4):", videoSource.src);
+        if (newSrc) {
+          videoSource.src = newSrc;
+          videoSource.parentElement.load();
+        }
+      } else if (iframe) {
+        alert("Editing PDF URLs is not supported.");
+      }
+    }
+  </script>
+</body>
+</html>
